@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu site na nuvem do CONECTA JOVEM</title>
+<title>Meu site na nuvem CONECTA JOVEM</title>
 <style>
 body { font-family: Arial, sans-serif; margin: 0; background: #fff7f0; }
-header { background: #ee6a33; color: white; padding: 40px 20px; }
+header { background: #2a6fdb; color: white; padding: 40px 20px; }
 main { max-width: 640px; margin: 0 auto; padding: 20px; }
 .cartao { background: white; border-radius: 12px; padding: 20px;
 margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
@@ -14,8 +14,8 @@ margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
 </head>
 <body>
 <header>
-<h1>Olá, eu sou o Yuri!</h1>
-<p>Estudante do Projeto Conecta Jovem</p>
+<h1>Olá, eu sou o Abranches! @@@@@@@@@ !!!!!</h1>
+<p>Professor do Projeto Conecta Jovem</p>
 </header>
 <main>
 <section class="cartao">
@@ -29,10 +29,33 @@ margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
 <li>Este site, publicado na nuvem</li>
 </ul>
 </section>
-</main>
-</body>
-</html>
+<section class="cartao">
+ <h2>Mensagem da nuvem</h2>
+ <p id="mensagem">Carregando...</p>
+ <p id="hora-nuvem"></p>
+ <p id="hora-local"></p>
 </section>
+<script>
+ function atualizar() {
+ fetch('/api/ola')
+ .then(resposta => resposta.json())
+ .then(dados => {
+ const texto = dados.mensagem + ' (' + dados.turma + ')';
+ document.getElementById('mensagem').textContent = texto;
+ // compara o horário gerado na nuvem (UTC) com o do seu computador
+ const nuvem = new Date(dados.horario).toLocaleTimeString('pt-BR', { timeZone: 'UTC' });
+ const local = new Date().toLocaleTimeString('pt-BR');
+ document.getElementById('hora-nuvem').textContent = 'Horário da nuvem (UTC): ' + nuvem;
+ document.getElementById('hora-local').textContent = 'Horário do seu computador: ' + local;
+ })
+ .catch(() => {
+ document.getElementById('mensagem').textContent = 'Não foi possível falar com a função.';
+ });
+ }
+ atualizar();
+ // pede uma nova resposta para a nuvem a cada 5 segundos
+ setInterval(atualizar, 5000);
+</script>
 </main>
 </body>
 </html>
