@@ -14,8 +14,8 @@ margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
 </head>
 <body>
 <header>
-<h1>Olá, eu sou o Yuri</h1>
-<p>Aluno do Projeto Conecta Jovem</p>
+<h1>Olá, eu sou o Abranches! @@@@@@@@@             !!!!!</h1>
+<p>Professor do Projeto Conecta Jovem</p>
 </header>
 <main>
 <section class="cartao">
@@ -28,33 +28,34 @@ margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
 <li>Jogo de plataforma feito no Game Studio</li>
 <li>Este site, publicado na nuvem</li>
 </ul>
+<p><a href="/ia.html">Experimente o meu resumidor com IA</a></p>
 </section>
 <section class="cartao">
- <h2>Mensagem da nuvem</h2>
- <p id="mensagem">Carregando...</p>
- <p id="hora-nuvem"></p>
- <p id="hora-local"></p>
+  <h2>Mensagem da nuvem</h2>
+  <p id="mensagem">Carregando...</p>
+  <p id="hora-nuvem"></p>
+  <p id="hora-local"></p>
 </section>
 <script>
- function atualizar() {
- fetch('/api/ola')
- .then(resposta => resposta.json())
- .then(dados => {
- const texto = dados.mensagem + ' (' + dados.turma + ')';
- document.getElementById('mensagem').textContent = texto;
- // compara o horário gerado na nuvem (UTC) com o do seu computador
- const nuvem = new Date(dados.horario).toLocaleTimeString('pt-BR', { timeZone: 'UTC' });
- const local = new Date().toLocaleTimeString('pt-BR');
- document.getElementById('hora-nuvem').textContent = 'Horário da nuvem (UTC): ' + nuvem;
- document.getElementById('hora-local').textContent = 'Horário do seu computador: ' + local;
- })
- .catch(() => {
- document.getElementById('mensagem').textContent = 'Não foi possível falar com a função.';
- });
- }
- atualizar();
- // pede uma nova resposta para a nuvem a cada 5 segundos
- setInterval(atualizar, 5000);
+  function atualizar() {
+    fetch('/api/oi')
+      .then(resposta => resposta.json())
+      .then(dados => {
+        const texto = dados.mensagemns + ' (' + dados.turma + ')';
+        document.getElementById('mensagem').textContent = texto;
+        // compara o horário gerado na nuvem (UTC) com o do seu computador
+        const nuvem = new Date(dados.horario).toLocaleTimeString('pt-BR', { timeZone: 'UTC' });
+        const local = new Date().toLocaleTimeString('pt-BR');
+        document.getElementById('hora-nuvem').textContent = 'Horário da nuvem (UTC): ' + nuvem;
+        document.getElementById('hora-local').textContent = 'Horário do seu computador: ' + local;
+      })
+      .catch(() => {
+        document.getElementById('mensagem').textContent = 'Não foi possível falar com a função.';
+      });
+  }
+  atualizar();
+  // pede uma nova resposta para a nuvem a cada 5 segundos
+  setInterval(atualizar, 5000);
 </script>
 </main>
 </body>

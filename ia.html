@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resumidor de estudos com IA</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #fff7f0; }
+    main { max-width: 640px; margin: 0 auto; padding: 24px; }
+    textarea { width: 100%; box-sizing: border-box; padding: 12px; font-size: 16px; }
+    button { margin-top: 12px; padding: 12px 20px; font-size: 16px; border: 0;
+             border-radius: 8px; background: #ee6a33; color: white; }
+    button:disabled { background: #bbb; }
+    .etiqueta { display: inline-block; background: #fce3d3; border-radius: 12px;
+                padding: 4px 10px; margin: 4px 4px 0 0; }
+    .aviso { font-size: 13px; color: #777; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Resumidor de estudos</h1>
+    <p>Cole um texto e a IA devolve um resumo e as palavras-chave.</p>
+    <textarea id="texto" rows="8" maxlength="2000"
+              placeholder="Cole aqui um texto de até 2.000 caracteres"></textarea>
+    <button id="botao">Resumir com IA</button>
+    <div id="resultado"></div>
+    <p class="aviso">Respostas geradas por inteligência artificial podem conter erros.
+      Não envie dados pessoais.</p>
+  </main>
+  <script>
+    const botao = document.getElementById('botao');
+    const resultado = document.getElementById('resultado');
+
+    function mostrar(dados) {
+      resultado.replaceChildren();                // limpa o resultado anterior
+      const resumo = document.createElement('p');
+      resumo.textContent = dados.resumo;          // mostra como texto, com segurança
+      resultado.appendChild(resumo);
+      for (const palavra of dados.palavras_chave || []) {
+        const etiqueta = document.createElement('span');
+        etiqueta.className = 'etiqueta';
+        etiqueta.textContent = palavra;
+        resultado.appendChild(etiqueta);
+      }
+    }
+
+    botao.addEventListener('click', async () => {
+      const texto = document.getElementById('texto').value.trim();
+      if (!texto) {
+        resultado.textContent = 'Digite ou cole um texto primeiro.';
+        return;
+      }
+      botao.disabled = true;                      // evita cliques repetidos
+      resultado.textContent = 'Pensando...';
+      try {
+        const resposta = await fetch('/api/ia', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ texto: texto }),
+        });
+        const dados = await resposta.json();
+        if (resposta.ok) {
+          mostrar(dados);
+        } else {
+          resultado.textContent = dados.erro;
+        }
+      } catch (erro) {
+        resultado.textContent = 'Sem conexão com o servidor. Tente de novo.';
+      } finally {
+        botao.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
